@@ -1,0 +1,6 @@
+---
+microcode_packages_amd:
+  - 'microcode_ctl'
+
+microcode_packages_intel:
+  - 'microcode_ctl'

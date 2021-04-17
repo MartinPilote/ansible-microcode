@@ -1,0 +1,6 @@
+---
+microcode_packages_amd:
+  - 'amd64-microcode'
+
+microcode_packages_intel:
+  - 'intel-microcode'

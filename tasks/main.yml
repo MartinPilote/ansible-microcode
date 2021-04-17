@@ -1,0 +1,68 @@
+---
+
+- name: Load distribution variables
+  include_vars: '{{ ansible_distribution }}.yml'
+
+- name: Get CPU vendor AMD
+  tags:
+    - cpu
+    - microcode
+    - amd
+  set_fact:
+    microcode_cpu_vendor: 'amd'
+  when: ansible_processor | lower is search('amd')
+
+- name: 'Get CPU vendor Intel'
+  tags:
+    - cpu
+    - microcode
+    - intel
+  set_fact:
+    microcode_cpu_vendor: 'intel'
+  when: ansible_processor | lower is search('intel')
+
+- name: Install package for AMD
+  tags:
+    - cpu
+    - microcode
+    - amd
+  package:
+    name: '{{ microcode_packages_amd }}'
+    state: latest
+  when:
+    - ansible_virtualization_role == 'host'
+    - microcode_cpu_vendor == 'amd'
+
+- name: Install package for Intel
+  tags:
+    - cpu
+    - microcode
+    - intel
+  package:
+    name: '{{ microcode_packages_intel }}'
+    state: latest
+  when:
+    - ansible_virtualization_role == 'host'
+    - microcode_cpu_vendor == 'intel'
+
+- name: Remove package for AMD
+  tags:
+    - cpu
+    - microcode
+    - amd
+  package:
+    name: '{{ microcode_packages_amd }}'
+    state: absent
+  when:
+    - ansible_virtualization_role == 'guest' or (microcode_packages_amd != microcode_packages_intel and microcode_cpu_vendor == 'intel')
+
+- name: Remove package for Intel
+  tags:
+    - cpu
+    - microcode
+    - intel
+  package:
+    name: '{{ microcode_packages_intel }}'
+    state: absent
+  when:
+    - ansible_virtualization_role == 'guest' or (microcode_packages_amd != microcode_packages_intel and microcode_cpu_vendor == 'amd')

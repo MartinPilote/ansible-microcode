@@ -4,3 +4,4 @@ microcode_packages_amd:
 
 microcode_packages_intel:
   - 'intel-ucode'
+...

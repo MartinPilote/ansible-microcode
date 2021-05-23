@@ -1,5 +1,4 @@
 ---
-
 - name: Load distribution variables
   include_vars: '{{ ansible_distribution }}.yml'
 
@@ -66,3 +65,4 @@
     state: absent
   when:
     - ansible_virtualization_role == 'guest' or (microcode_packages_amd != microcode_packages_intel and microcode_cpu_vendor == 'amd')
+...

@@ -2,6 +2,9 @@
 - name: Load distribution variables
   include_vars: '{{ ansible_distribution }}.yml'
 
+- set_fact:
+    microcode_cpu_vendor: ''
+
 - name: Get CPU vendor AMD
   tags:
     - cpu
